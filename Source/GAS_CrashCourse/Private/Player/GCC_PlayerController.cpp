@@ -46,6 +46,8 @@ void AGCC_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	
+	EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &ThisClass::PrimaryAbility);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -96,4 +98,10 @@ void AGCC_PlayerController::Look(const FInputActionValue& Value)
 	
 	AddYawInput(LookAxisVector.X);
 	AddPitchInput(LookAxisVector.Y);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_PlayerController::PrimaryAbility()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("Primary Ability"));
 }
