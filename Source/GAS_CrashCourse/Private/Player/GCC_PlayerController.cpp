@@ -7,6 +7,11 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+
+// Project Includes
+#include "GameplayTags/GCCTags.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::SetupInputComponent()
@@ -22,7 +27,6 @@ void AGCC_PlayerController::SetupInputComponent()
 	 * 	if (UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()); IsValid(InputSubsystem)) */
 	
 	// OPTION 3
-	
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	if (!IsValid(InputSubsystem))
 	{
@@ -103,5 +107,17 @@ void AGCC_PlayerController::Look(const FInputActionValue& Value)
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::PrimaryAbility()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("Primary Ability"));
+	ActivateAbility(GCCTags::GCCAbilities::Primary);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
+{
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	if (!IsValid(ASC))
+	{
+		return;
+	}
+	
+	ASC->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
 }
