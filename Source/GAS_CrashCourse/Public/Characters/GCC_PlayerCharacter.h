@@ -17,6 +17,12 @@ class GAS_CRASHCOURSE_API AGCC_PlayerCharacter : public AGCC_BaseCharacter
 public:
 
 	AGCC_PlayerCharacter();
+	
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void OnRep_PlayerState() override;
 
 private:
 	

@@ -8,7 +8,12 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AbilitySystemComponent.h"
 
+// Project Includes
+#include "Player/GCC_PlayerState.h"
+
+//----------------------------------------------------------------------------------------------------------------------
 AGCC_PlayerCharacter::AGCC_PlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -36,4 +41,44 @@ AGCC_PlayerCharacter::AGCC_PlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+UAbilitySystemComponent* AGCC_PlayerCharacter::GetAbilitySystemComponent() const
+{
+	AGCC_PlayerState* GCC_PlayerState = Cast<AGCC_PlayerState>(GetPlayerState());
+	if (!IsValid(GCC_PlayerState))
+	{
+		return nullptr;
+	}
+	
+	return GCC_PlayerState->GetAbilitySystemComponent();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	if(!IsValid(GetAbilitySystemComponent()))
+	{
+		return;
+	}
+	
+	// We set the Owner Actor and the Avatar Actor
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_PlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	
+	if(!IsValid(GetAbilitySystemComponent()))
+	{
+		return;
+	}
+	
+	// We set the Owner Actor and the Avatar Actor
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 }
