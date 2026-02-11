@@ -60,13 +60,14 @@ void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	if(!IsValid(GetAbilitySystemComponent()))
+	if(!IsValid(GetAbilitySystemComponent()) || !HasAuthority())
 	{
 		return;
 	}
 	
 	// We set the Owner Actor and the Avatar Actor
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	GiveStartupAbilities();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
