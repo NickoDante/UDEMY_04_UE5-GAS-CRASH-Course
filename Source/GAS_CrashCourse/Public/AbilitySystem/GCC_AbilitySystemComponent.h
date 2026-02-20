@@ -14,13 +14,11 @@ class GAS_CRASHCOURSE_API UGCC_AbilitySystemComponent : public UAbilitySystemCom
 
 public:
 	
-	UGCC_AbilitySystemComponent();
+	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
 	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-							   FActorComponentTickFunction* ThisTickFunction) override;
-
-protected:
-
-	virtual void BeginPlay() override;
-
+	virtual void OnRep_ActivateAbilities() override;
+	
+private:
+	
+	void HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec);
 };

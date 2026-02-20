@@ -1,23 +1,44 @@
 ﻿// Nicolas Nieto - GCC - Copyright - 2026
 
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
+#include "GameplayTags/GCCTags.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-UGCC_AbilitySystemComponent::UGCC_AbilitySystemComponent()
+void UGCC_AbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	Super::OnGiveAbility(AbilitySpec);
+	
+	// When a server gives an ability.
+	HandleAutoActivatedAbility(AbilitySpec);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void UGCC_AbilitySystemComponent::BeginPlay()
+void UGCC_AbilitySystemComponent::OnRep_ActivateAbilities()
 {
-	Super::BeginPlay();
+	Super::OnRep_ActivateAbilities();
+	
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (const FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		// This is more for clients due to server is the only could receive abilities.
+		HandleAutoActivatedAbility(AbilitySpec);
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void UGCC_AbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                                FActorComponentTickFunction* ThisTickFunction)
+void UGCC_AbilitySystemComponent::HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (!AbilitySpec.Ability)
+	{
+		return;
+	}
+	
+	for (const FGameplayTag& Tag: AbilitySpec.Ability->GetAssetTags())
+	{
+		if (Tag.MatchesTagExact(GCCTags::GCCAbilities::ActivateOnGiven))
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+			return;
+		}
+	}
 }
-
