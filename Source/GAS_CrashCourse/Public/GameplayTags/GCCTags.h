@@ -15,4 +15,12 @@ namespace GCCTags
 		// Abilities Behavior
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(ActivateOnGiven);
 	}
+	
+	namespace GCCEvents
+	{
+		namespace Enemy
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+		}
+	}
 }

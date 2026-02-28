@@ -14,4 +14,12 @@ namespace GCCTags
 		//--- ABILITY BEHAVIOR ---
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "GCCTags.GCCAbilities.ActivateOnGiven", "Tag for Abilities that should activate immediately once given")
 	}
+	
+	namespace GCCEvents
+	{
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.GCCEvents.Enemy.HitReact", "Tag for the Enemy Hit React event")
+		}
+	}
 }
