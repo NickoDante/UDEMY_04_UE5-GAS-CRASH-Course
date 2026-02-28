@@ -19,7 +19,10 @@ public:
 	UGCC_GA_Primary();
 	
 	UFUNCTION(BlueprintCallable, Category = "Crash|Abilities")
-	void HitBoxOverlapTest();
+	TArray<AActor*> HitBoxOverlapTest();
+	
+	UFUNCTION(BlueprintCallable, Category = "Crash|Abilities")
+	void SendHitReactEventToActors(const TArray<AActor*>& ActorsHit);
 	
 private:
 	
@@ -31,4 +34,6 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Crash|Abilities")
 	float HitBoxElevationOffset;
+	
+	void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const;
 };
