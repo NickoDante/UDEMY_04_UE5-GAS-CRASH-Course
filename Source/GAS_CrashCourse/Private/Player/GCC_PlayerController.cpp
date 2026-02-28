@@ -109,19 +109,19 @@ void AGCC_PlayerController::Look(const FInputActionValue& Value)
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::PrimaryAbility()
 {
-	ActivateAbility(GCCTags::GCCAbilities::Primary);
+	ActivateAbility(GCCTags::Abilities::Player::Primary);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::SecondaryAbility()
 {
-	ActivateAbility(GCCTags::GCCAbilities::Secondary);
+	ActivateAbility(GCCTags::Abilities::Player::Secondary);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::TertiaryAbility()
 {
-	ActivateAbility(GCCTags::GCCAbilities::Tertiary);
+	ActivateAbility(GCCTags::Abilities::Player::Tertiary);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

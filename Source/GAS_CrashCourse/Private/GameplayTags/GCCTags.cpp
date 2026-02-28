@@ -1,25 +1,40 @@
 #include "GameplayTags/GCCTags.h"
 
 namespace GCCTags
-{
-	namespace GCCAbilities
+{	
+	namespace Abilities
 	{
-		// Version 1: Directly
-		// UE_DEFINE_GAMEPLAY_TAG(Primary, "GCCTags.GCCAbilities.Primary")
-		// Version 2: With a comment
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GCCTags.GCCAbilities.Primary", "Tag for the Primary Ability")
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GCCTags.GCCAbilities.Secondary", "Tag for the Secondary Ability")
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "GCCTags.GCCAbilities.Tertiary", "Tag for the Tertiary Ability")
+		namespace Player
+		{
+			// Version 1: Directly
+			// UE_DEFINE_GAMEPLAY_TAG(Primary, "GCCTags.GCCAbilities.Primary")
+			// Version 2: With a comment
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GCCTags.Abilities.Player.Primary", "Tag/ID to identify the Primary Ability")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GCCTags.Abilities.Player.Secondary", "Tag/ID to identify the Secondary Ability")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "GCCTags.Abilities.Player.Tertiary", "Tag/ID to identify the Tertiary Ability")
+		}
 		
-		//--- ABILITY BEHAVIOR ---
-		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "GCCTags.GCCAbilities.ActivateOnGiven", "Tag for Abilities that should activate immediately once given")
-	}
-	
-	namespace GCCEvents
-	{
 		namespace Enemy
 		{
-			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.GCCEvents.Enemy.HitReact", "Tag for the Enemy Hit React event")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Abilities.Enemy.HitReact", "Tag/ID to identify the HitReact Ability")
+		}
+
+		namespace Behavior
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "GCCTags.Abilities.Behavior.ActivateOnGiven", "Tag for Abilities that should activate immediately once given")
+		}
+	}
+	
+	namespace Events
+	{
+		namespace Player
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GCCTags.Events.Player.Primary", "Tag for the player to invoke the logic to make damage with Primary Attack")
+		}
+		
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Events.Enemy.HitReact", "Tag for the enemy when it receives something to activate HitReaction")
 		}
 	}
 }
