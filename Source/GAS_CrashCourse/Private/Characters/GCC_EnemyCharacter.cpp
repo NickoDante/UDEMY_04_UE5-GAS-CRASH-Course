@@ -1,7 +1,11 @@
 ﻿// Nicolas Nieto - GCC - Copyright - 2026
 
+// Header include
 #include "Characters/GCC_EnemyCharacter.h"
+
+// Project Includes
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
+#include "AbilitySystem/GCC_AttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 AGCC_EnemyCharacter::AGCC_EnemyCharacter()
@@ -11,6 +15,8 @@ AGCC_EnemyCharacter::AGCC_EnemyCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UGCC_AbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	
+	AttributeSet = CreateDefaultSubobject<UGCC_AttributeSet>("AttributeSet");
 }
 
 //----------------------------------------------------------------------------------------------------------------------

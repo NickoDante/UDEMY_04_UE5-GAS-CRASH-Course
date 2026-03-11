@@ -1,7 +1,11 @@
 // Nicolas Nieto - GCC - Copyright - 2026
 
+// Header Include
 #include "Player/GCC_PlayerState.h"
+
+// Project Includes
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
+#include "AbilitySystem/GCC_AttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 AGCC_PlayerState::AGCC_PlayerState()
@@ -12,6 +16,8 @@ AGCC_PlayerState::AGCC_PlayerState()
 	AbilitySystemComponent = CreateDefaultSubobject<UGCC_AbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	
+	AttributeSet = CreateDefaultSubobject<UGCC_AttributeSet>("AttributeSet");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
