@@ -36,3 +36,20 @@ void AGCC_BaseCharacter::GiveStartupAbilities()
 		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
 	}
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::InitializeAttributes()
+{
+	// Check first if the effect exist
+	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributes not set!"));
+	
+	/* Apply the effect:
+	*	1. Make an effect Context handle
+	*	2. Make an Spec from the effect class, the level and the context handle
+	*	3. Apply the effect to Self (the ASC who is calling it)
+	*/
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1.f, ContextHandle);
+	
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}

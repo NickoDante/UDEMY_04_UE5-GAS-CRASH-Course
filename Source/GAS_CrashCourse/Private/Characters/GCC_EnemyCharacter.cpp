@@ -43,4 +43,5 @@ void AGCC_EnemyCharacter::BeginPlay()
 	}
 	
 	GiveStartupAbilities();
+	InitializeAttributes();
 }

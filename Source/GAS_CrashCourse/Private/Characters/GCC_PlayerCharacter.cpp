@@ -68,6 +68,7 @@ void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
 	// We set the Owner Actor and the Avatar Actor
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	GiveStartupAbilities();
+	InitializeAttributes();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
