@@ -56,6 +56,18 @@ UAbilitySystemComponent* AGCC_PlayerCharacter::GetAbilitySystemComponent() const
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+UAttributeSet* AGCC_PlayerCharacter::GetAttributeSet() const
+{
+	AGCC_PlayerState* GCC_PlayerState = Cast<AGCC_PlayerState>(GetPlayerState());
+	if (!IsValid(GCC_PlayerState))
+	{
+		return nullptr;
+	}
+	
+	return GCC_PlayerState->GetAttributeSet();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -67,6 +79,8 @@ void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
 	
 	// We set the Owner Actor and the Avatar Actor
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	
 	GiveStartupAbilities();
 	InitializeAttributes();
 }
@@ -83,4 +97,5 @@ void AGCC_PlayerCharacter::OnRep_PlayerState()
 	
 	// We set the Owner Actor and the Avatar Actor
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 }

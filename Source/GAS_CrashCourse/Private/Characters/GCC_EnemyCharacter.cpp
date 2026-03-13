@@ -26,6 +26,12 @@ UAbilitySystemComponent* AGCC_EnemyCharacter::GetAbilitySystemComponent() const
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+UAttributeSet* AGCC_EnemyCharacter::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void AGCC_EnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -36,6 +42,7 @@ void AGCC_EnemyCharacter::BeginPlay()
 	}
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	
 	if (!HasAuthority())
 	{
