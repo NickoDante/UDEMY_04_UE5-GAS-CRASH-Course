@@ -5,14 +5,43 @@
 #include "Net/UnrealNetwork.h"
 
 //----------------------------------------------------------------------------------------------------------------------
+UGCC_AttributeSet::UGCC_AttributeSet()
+{
+	bAttributesInitialized = false;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void UGCC_AttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, bAttributesInitialized, COND_None, REPNOTIFY_Always);
 	
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_AttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+	
+	if (!bAttributesInitialized)
+	{
+		bAttributesInitialized = true;
+		OnAttributesInitialized.Broadcast();
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_AttributeSet::OnRep_AttributesInitialized()
+{
+	if (bAttributesInitialized)
+	{
+		OnAttributesInitialized.Broadcast();
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

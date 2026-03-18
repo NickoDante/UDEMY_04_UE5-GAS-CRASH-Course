@@ -13,6 +13,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGCC_AttributesInitialized);
+
 /**
  * The Attribute Set class for the Course.
  */
@@ -23,7 +25,26 @@ class GAS_CRASHCOURSE_API UGCC_AttributeSet : public UAttributeSet
 	
 public:
 	
+	UGCC_AttributeSet();
+	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	
+#pragma endregion Initialization
+	
+public:
+	
+	UPROPERTY(ReplicatedUsing = OnRep_AttributesInitialized)
+	uint8 bAttributesInitialized : 1;
+	
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FGCC_AttributesInitialized OnAttributesInitialized;
+	
+	UFUNCTION()
+	void OnRep_AttributesInitialized();
+	
+#pragma endregion Initialization
 	
 #pragma region Health
 	

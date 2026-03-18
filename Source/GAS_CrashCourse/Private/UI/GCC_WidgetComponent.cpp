@@ -17,7 +17,10 @@ void UGCC_WidgetComponent::BeginPlay()
 	if (!IsASCInitialized())
 	{
 		CrashCharacter->OnASCInitialized.AddUniqueDynamic(this, &ThisClass::OnASCInitialized);
+		return;
 	}
+	
+	InitializeAttributeDelegate();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,6 +43,34 @@ void UGCC_WidgetComponent::OnASCInitialized(UAbilitySystemComponent* ASC, UAttri
 	AbilitySystemComponent = Cast<UGCC_AbilitySystemComponent>(ASC);
 	AttributeSet = Cast<UGCC_AttributeSet>(AS);
 	
-	/* TODO: Check if the Attribute Set has been initialized with the first GE
-		If not, bind to some delegate that will be broadcasted when it is initialized.*/
+	if (!IsASCInitialized())
+	{
+		return;
+	}
+	
+	InitializeAttributeDelegate();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_WidgetComponent::InitializeAttributeDelegate()
+{
+	if (!AttributeSet.IsValid())
+	{
+		return;
+	}
+	
+	if (!AttributeSet->bAttributesInitialized)
+	{
+		AttributeSet->OnAttributesInitialized.AddUniqueDynamic(this, &ThisClass::UGCC_WidgetComponent::BindToAttributeChanges);
+	}
+	else
+	{
+		BindToAttributeChanges();
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_WidgetComponent::BindToAttributeChanges()
+{
+	// TODO: Listen for changes to gameplay attributes and update our widgets accordingly
 }
