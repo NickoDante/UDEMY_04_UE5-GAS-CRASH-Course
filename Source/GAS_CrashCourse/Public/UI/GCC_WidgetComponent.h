@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "Components/WidgetComponent.h"
 #include "GCC_WidgetComponent.generated.h"
 
@@ -22,6 +23,9 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
+	UPROPERTY(EditAnywhere)
+	TMap<FGameplayAttribute, FGameplayAttribute> AttributeMap;
+	
 private:
 	
 	TWeakObjectPtr<AGCC_BaseCharacter> CrashCharacter;
@@ -39,4 +43,6 @@ private:
 	
 	UFUNCTION()
 	void BindToAttributeChanges();
+	
+	void BindWidgetToAttributeChanges(UWidget* WidgetObject, const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const;
 };

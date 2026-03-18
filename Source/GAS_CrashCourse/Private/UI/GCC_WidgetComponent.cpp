@@ -3,10 +3,14 @@
 // Header includes
 #include "UI/GCC_WidgetComponent.h"
 
+// Engine includes
+#include "Blueprint/WidgetTree.h"
+
 // Project Includes
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
 #include "AbilitySystem/GCC_AttributeSet.h"
 #include "Characters/GCC_BaseCharacter.h"
+#include "UI/GCC_AttributeWidget.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 void UGCC_WidgetComponent::BeginPlay()
@@ -72,5 +76,35 @@ void UGCC_WidgetComponent::InitializeAttributeDelegate()
 //----------------------------------------------------------------------------------------------------------------------
 void UGCC_WidgetComponent::BindToAttributeChanges()
 {
-	// TODO: Listen for changes to gameplay attributes and update our widgets accordingly
+	for (const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair: AttributeMap)
+	{
+		// For checking the owned widget object
+		BindWidgetToAttributeChanges(GetUserWidgetObject(), Pair);
+		
+		// For checking the child widget objects
+		GetUserWidgetObject()->WidgetTree->ForEachWidget([this, &Pair](UWidget* ChildWidget)
+		{
+			BindWidgetToAttributeChanges(ChildWidget, Pair);
+		});
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_WidgetComponent::BindWidgetToAttributeChanges(UWidget* WidgetObject, const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const
+{
+	UGCC_AttributeWidget* AttributeWidget = Cast<UGCC_AttributeWidget>(WidgetObject);
+	if (!IsValid(AttributeWidget)) // We only care about CC Attribute Widgets
+	{
+		return;
+	}
+		
+	if (!AttributeWidget->MatchesAttributes(Pair)) // Only subscribe for matching Attributes
+	{
+		return;
+	}
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Key).AddLambda([this, AttributeWidget, &Pair](const FOnAttributeChangeData& AttributeChangeData)
+	{
+		AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get()); // For changes during the game
+	});
 }
