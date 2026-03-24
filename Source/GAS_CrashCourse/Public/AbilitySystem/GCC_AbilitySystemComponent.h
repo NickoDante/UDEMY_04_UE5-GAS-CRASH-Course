@@ -18,6 +18,12 @@ public:
 	
 	virtual void OnRep_ActivateAbilities() override;
 	
+	UFUNCTION(BlueprintCallable, Category = "Crash|Abilities")
+	void SetAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, const int32 Level);
+	
+	UFUNCTION(BlueprintCallable, Category = "Crash|Abilities")
+	void AddToAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, const int32 Level = 1);
+	
 private:
 	
 	void HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec);

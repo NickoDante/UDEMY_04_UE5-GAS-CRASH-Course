@@ -26,6 +26,44 @@ void UGCC_AbilitySystemComponent::OnRep_ActivateAbilities()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+void UGCC_AbilitySystemComponent::SetAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, const int32 Level)
+{
+	// Check if its server only
+	if (IsValid(GetAvatarActor()) && !GetAvatarActor()->HasAuthority())
+	{
+		return;
+	}
+	
+	// Use FindAbilitySpecFromClass function from GAS to get the ability spec
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromClass(AbilityClass);
+	if (AbilitySpec)
+	{
+		AbilitySpec->Level = Level;
+		// We want it to replicate immediately so that the new level is reflected on BPs
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_AbilitySystemComponent::AddToAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, const int32 Level)
+{
+	// Check if its server only
+	if (IsValid(GetAvatarActor()) && !GetAvatarActor()->HasAuthority())
+	{
+		return;
+	}
+	
+	// Use FindAbilitySpecFromClass function from GAS to get the ability spec
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromClass(AbilityClass);
+	if (AbilitySpec)
+	{
+		AbilitySpec->Level += Level;
+		// We want it to replicate immediately so that the new level is reflected on BPs
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void UGCC_AbilitySystemComponent::HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec)
 {
 	if (!AbilitySpec.Ability)
