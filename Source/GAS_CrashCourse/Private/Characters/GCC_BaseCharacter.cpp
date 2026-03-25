@@ -5,6 +5,7 @@
 
 // Engine includes
 #include "AbilitySystemComponent.h"
+#include "Net/UnrealNetwork.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 AGCC_BaseCharacter::AGCC_BaseCharacter()
@@ -13,6 +14,16 @@ AGCC_BaseCharacter::AGCC_BaseCharacter()
 	
 	// Tick and refresh bones transforms whether rendered or not - for bone updates on a dedicated server.
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	
+	bAlive = true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ThisClass, bAlive);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -52,4 +63,30 @@ void AGCC_BaseCharacter::InitializeAttributes()
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1.f, ContextHandle);
 	
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData)
+{
+	if (AttributeChangeData.NewValue <= 0.f)
+	{
+		HandleDeath();
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::HandleDeath()
+{
+	SetIsAlive(false);
+	
+	if (IsValid(GEngine))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s is dead!"), *GetName()));
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::HandleRespawn()
+{
+	SetIsAlive(true);
 }

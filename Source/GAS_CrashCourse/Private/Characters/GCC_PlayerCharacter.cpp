@@ -11,6 +11,7 @@
 #include "AbilitySystemComponent.h"
 
 // Project Includes
+#include "AbilitySystem/GCC_AttributeSet.h"
 #include "Player/GCC_PlayerState.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -83,6 +84,14 @@ void AGCC_PlayerCharacter::PossessedBy(AController* NewController)
 	
 	GiveStartupAbilities();
 	InitializeAttributes();
+	
+	UGCC_AttributeSet* GCC_AttributeSet = Cast<UGCC_AttributeSet>(GetAttributeSet());
+	if (!IsValid(GCC_AttributeSet))
+	{
+		return;
+	}
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GCC_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -98,4 +107,12 @@ void AGCC_PlayerCharacter::OnRep_PlayerState()
 	// We set the Owner Actor and the Avatar Actor
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	
+	UGCC_AttributeSet* GCC_AttributeSet = Cast<UGCC_AttributeSet>(GetAttributeSet());
+	if (!IsValid(GCC_AttributeSet))
+	{
+		return;
+	}
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GCC_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
