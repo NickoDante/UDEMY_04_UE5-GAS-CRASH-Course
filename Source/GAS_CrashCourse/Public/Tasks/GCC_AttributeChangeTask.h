@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FGCC_OnAttributeChanged, FGamepla
 /**
  * The Ability task class when an attribute changes
  */
-UCLASS()
+UCLASS(BlueprintType, meta = (ExposedAsyncProxy = AsyncTask))
 class GAS_CRASHCOURSE_API UGCC_AttributeChangeTask : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
