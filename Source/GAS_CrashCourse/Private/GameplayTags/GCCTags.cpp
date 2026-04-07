@@ -4,6 +4,11 @@ namespace GCCTags
 {	
 	namespace Abilities
 	{
+		namespace Common
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Death, "GCCTags.Abilities.Common.Death", "Tag/ID to identify the Death Ability")
+		}
+		
 		namespace Player
 		{
 			// Version 1: Directly

@@ -8,6 +8,12 @@ namespace GCCTags
 	// Category for anything involves Abilities
 	namespace Abilities
 	{
+		// Category for anything about Players & Enemies = Entities
+		namespace Common
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death);
+		}
+		
 		// Category for anything about Player Ability
 		namespace Player
 		{
@@ -16,7 +22,7 @@ namespace GCCTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Tertiary);
 		}
 		
-		// Category for anything about Player Ability
+		// Category for anything about Enemy Ability
 		namespace Enemy
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
