@@ -51,18 +51,8 @@ void AGCC_BaseCharacter::GiveStartupAbilities()
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_BaseCharacter::InitializeAttributes()
 {
-	// Check first if the effect exist
-	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributes not set!"));
-	
-	/* Apply the effect:
-	*	1. Make an effect Context handle
-	*	2. Make an Spec from the effect class, the level and the context handle
-	*	3. Apply the effect to Self (the ASC who is calling it)
-	*/
-	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1.f, ContextHandle);
-	
-	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributesEffect not set!"));
+	ModifyAttributesByClass(InitializeAttributesEffect);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,7 +76,29 @@ void AGCC_BaseCharacter::HandleDeath()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::ModifyAttributesByClass(TSubclassOf<UGameplayEffect> AttributeEffect)
+{
+	/* Apply the effect:
+	*	1. Make an effect Context handle
+	*	2. Make an Spec from the effect class, the level and the context handle
+	*	3. Apply the effect to Self (the ASC who is calling it)
+	*/
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(AttributeEffect, 1.f, ContextHandle);
+	
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void AGCC_BaseCharacter::HandleRespawn()
 {
 	SetIsAlive(true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::ResetAttributes()
+{
+	// Check if the effect exist
+	checkf(IsValid(ResetAttributesEffect), TEXT("ResetAttributeEffect not set!"));
+	ModifyAttributesByClass(ResetAttributesEffect);
 }
