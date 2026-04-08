@@ -50,4 +50,14 @@ namespace GCCTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact); // Called when the enemy has been involved when a hit occurs.
 		}
 	}
+	
+	// Category for anything involves Status
+	namespace Status
+	{
+		// Statuses for any object in the game
+		namespace Common
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead); // When an object is dead
+		}
+	}
 }

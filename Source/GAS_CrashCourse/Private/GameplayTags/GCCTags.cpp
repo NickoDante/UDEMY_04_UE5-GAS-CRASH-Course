@@ -42,4 +42,12 @@ namespace GCCTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Events.Enemy.HitReact", "Tag for the enemy when it receives something to activate HitReaction")
 		}
 	}
+	
+	namespace Status
+	{
+		namespace Common
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Dead, "GCCTags.Status.Common.Dead", "Tag given when an object is dead")
+		}
+	}
 }
