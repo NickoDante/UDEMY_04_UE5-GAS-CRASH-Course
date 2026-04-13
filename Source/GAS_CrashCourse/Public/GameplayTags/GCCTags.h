@@ -38,6 +38,12 @@ namespace GCCTags
 	// Category for anything involves Events
 	namespace Events
 	{
+		// Events for tCommon usage: Player & Enemies
+		namespace Common
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(KillScored); // Called when a character kill another character
+		}
+		
 		// Events for the player
 		namespace Player
 		{

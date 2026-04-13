@@ -32,6 +32,11 @@ namespace GCCTags
 	
 	namespace Events
 	{
+		namespace Common
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(KillScored, "GCCTags.Events.Common.KillScored", "Tag for a character that kill another character")
+		}
+		
 		namespace Player
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GCCTags.Events.Player.Primary", "Tag for the player to invoke the logic to make damage with Primary Attack")
