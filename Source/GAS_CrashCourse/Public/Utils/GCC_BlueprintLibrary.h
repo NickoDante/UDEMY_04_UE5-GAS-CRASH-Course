@@ -15,6 +15,18 @@ enum class EGCC_HitDirection : uint8
 	Back
 };
 
+USTRUCT(BlueprintType)
+struct FGCC_ClosestActorWithTagResult
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(BlueprintReadWrite)
+	TWeakObjectPtr<AActor> Actor;
+	
+	UPROPERTY(BlueprintReadWrite)
+	float Distance {0.0f};
+};
+
 /**
  * The Blueprint Function library for global functions on the GCC Project
  */
@@ -30,4 +42,7 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	static FName GetHitDirectionName(const EGCC_HitDirection& HitDirection);
+	
+	UFUNCTION(BlueprintCallable)
+	static FGCC_ClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag);
 };
