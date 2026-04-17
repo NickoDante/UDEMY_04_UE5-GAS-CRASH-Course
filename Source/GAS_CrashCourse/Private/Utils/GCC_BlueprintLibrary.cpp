@@ -1,11 +1,12 @@
 // Nicolas Nieto - GCC - Copyright - 2026
 
+// Header include
+#include "Utils/GCC_BlueprintLibrary.h"
+
 // Engine Includes
 #include "Kismet/GameplayStatics.h"
 
 // Project includes
-#include "Utils/GCC_BlueprintLibrary.h"
-
 #include "Characters/GCC_BaseCharacter.h"
 
 //----------------------------------------------------------------------------------------------------------------------
