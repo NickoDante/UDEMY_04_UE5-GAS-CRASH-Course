@@ -22,6 +22,7 @@ namespace GCCTags
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Abilities.Enemy.HitReact", "Tag/ID to identify the HitReact Ability")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attack, "GCCTags.Abilities.Enemy.Attack", "Tag/ID to identify the Enemy's Attack Ability")
 		}
 
 		namespace Behavior
@@ -45,6 +46,7 @@ namespace GCCTags
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Events.Enemy.HitReact", "Tag for the enemy when it receives something to activate HitReaction")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "GCCTags.Events.Enemy.EndAttack", "Tag for the enemy when it ends its own attack")
 		}
 	}
 	

@@ -26,6 +26,7 @@ namespace GCCTags
 		namespace Enemy
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack);
 		}
 
 		// Category for anything about Global Ability Behaviors
@@ -54,6 +55,7 @@ namespace GCCTags
 		namespace Enemy
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact); // Called when the enemy has been involved when a hit occurs.
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(EndAttack); // Called when the enemy ends its attack.
 		}
 	}
 	
