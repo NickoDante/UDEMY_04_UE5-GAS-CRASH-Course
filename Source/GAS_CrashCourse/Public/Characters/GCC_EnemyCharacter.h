@@ -33,7 +33,9 @@ protected:
 	float MinAttackDelay {0.1f} ;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Crash|AI")
-	float MaxAttackDelay {0.1f} ;
+	float MaxAttackDelay {0.5f} ;
+	
+	virtual void HandleDeath() override;
 	
 private:
 	

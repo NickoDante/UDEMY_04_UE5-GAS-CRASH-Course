@@ -74,11 +74,6 @@ void AGCC_BaseCharacter::OnHealthChanged(const FOnAttributeChangeData& Attribute
 void AGCC_BaseCharacter::HandleDeath()
 {
 	SetIsAlive(false);
-	
-	if (IsValid(GEngine))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s is dead!"), *GetName()));
-	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

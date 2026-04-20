@@ -1,7 +1,10 @@
 ﻿// Nicolas Nieto - GCC - Copyright - 2026
 
-// Header include
+// Header Include
 #include "Characters/GCC_EnemyCharacter.h"
+
+// Engine Includes
+#include "Runtime/AIModule/Classes/AIController.h"
 
 // Project Includes
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
@@ -59,4 +62,18 @@ void AGCC_EnemyCharacter::BeginPlay()
 	}
 	
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GCC_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_EnemyCharacter::HandleDeath()
+{
+	Super::HandleDeath();
+	
+	AAIController* AIController = GetController<AAIController>();
+	if (!IsValid(AIController))
+	{
+		return;
+	}
+	
+	AIController->StopMovement();
 }
