@@ -103,3 +103,9 @@ void AGCC_BaseCharacter::ResetAttributes()
 	checkf(IsValid(ResetAttributesEffect), TEXT("ResetAttributeEffect not set!"));
 	ModifyAttributesByClass(ResetAttributesEffect);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_BaseCharacter::RotateToTarget(AActor* RotateTarget)
+{
+	BP_RotateToTarget(RotateTarget);
+}

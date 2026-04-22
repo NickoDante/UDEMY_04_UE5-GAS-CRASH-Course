@@ -21,6 +21,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	virtual UAttributeSet* GetAttributeSet() const override;
+	
+	float GetMinAttackDelay() const { return MinAttackDelay; }
+	float GetMaxAttackDelay() const { return MinAttackDelay; }
 
 protected:
 	
