@@ -1,17 +1,20 @@
 ﻿// Nicolas Nieto - GCC - Copyright - 2026
 
 // Header Include
+
 #include "AbilitySystem/Abilities/Enemy/GCC_SearchForTarget.h"
 
 // Engine includes
 #include "AIController.h"
 #include "Abilities/Tasks/AbilityTask_WaitDelay.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Tasks/AITask_MoveTo.h"
+#include "AbilitySystemComponent.h"
 
 // Project includes
 #include "AbilitySystem/AbilityTasks/GCC_WaitGameplayEvent.h"
 #include "Characters/GCC_EnemyCharacter.h"
 #include "GameplayTags/GCCTags.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "Utils/GCC_BlueprintLibrary.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -110,7 +113,7 @@ void UGCC_SearchForTarget::Search()
 //----------------------------------------------------------------------------------------------------------------------
 void UGCC_SearchForTarget::MoveToTargetAndAttack()
 {
-	if (!OwningEnemyPtr.IsValid())
+	if (!OwningEnemyPtr.IsValid() || !OwningAIControllerPtr.IsValid() || !TargetBaseCharacterPtr.IsValid())
 	{
 		return;
 	}
@@ -121,5 +124,50 @@ void UGCC_SearchForTarget::MoveToTargetAndAttack()
 		return;
 	}
 	
-	// TODO: Pausing right here... Video 30:30 
+	MoveToLocationOrActorTask = UAITask_MoveTo::AIMoveTo(
+		OwningAIControllerPtr.Get(),
+		FVector(),
+		TargetBaseCharacterPtr.Get(),
+		OwningEnemyPtr->GetAcceptanceRadius()
+		);
+	
+	MoveToLocationOrActorTask->OnMoveTaskFinished.AddUObject(this, &ThisClass::RotationAndAttack);
+	MoveToLocationOrActorTask->ConditionalPerformMove();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_SearchForTarget::RotationAndAttack(TEnumAsByte<EPathFollowingResult::Type> Result, AAIController* AIController)
+{
+	if (Result != EPathFollowingResult::Success)
+	{
+		StartSearch();
+		return;
+	}
+	
+	if (!OwningEnemyPtr.IsValid())
+	{
+		return;
+	}
+	
+	OwningEnemyPtr->RotateToTarget(TargetBaseCharacterPtr.Get());
+	
+	AttackRotationDelayTask = UAbilityTask_WaitDelay::WaitDelay(
+		this,
+		OwningEnemyPtr.Get()->BP_GetRotationTimelineLength()
+		);
+	AttackRotationDelayTask->OnFinish.AddUniqueDynamic(this, &ThisClass::AttackTarget);
+	AttackRotationDelayTask->Activate();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_SearchForTarget::AttackTarget()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!IsValid(ASC))
+	{
+		return;
+	}
+	
+	const FGameplayTag AttackTag = GCCTags::Abilities::Enemy::Attack;
+	ASC->TryActivateAbilitiesByTag(AttackTag.GetSingleTagContainer());
 }

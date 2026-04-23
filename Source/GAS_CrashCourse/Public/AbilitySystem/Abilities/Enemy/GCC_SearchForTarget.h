@@ -6,9 +6,19 @@
 #include "AbilitySystem/Abilities/GCC_GameplayAbility.h"
 #include "GCC_SearchForTarget.generated.h"
 
+namespace EPathFollowingResult
+{
+	enum Type : int;
+}
+
+class AAIController;
+class UAbilityTask_WaitDelay;
+class UAITask_MoveTo;
+
 class AGCC_BaseCharacter;
 class UGCC_WaitGameplayEvent;
 class AGCC_EnemyCharacter;
+
 /**
  * 
  */
@@ -35,6 +45,12 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAbilityTask_WaitDelay> SearchDelayTask;
 	
+	UPROPERTY()
+	TObjectPtr<UAITask_MoveTo> MoveToLocationOrActorTask;
+	
+	UPROPERTY()
+	TObjectPtr<UAbilityTask_WaitDelay> AttackRotationDelayTask;
+	
 	void StartSearch();
 	
 	UFUNCTION()
@@ -44,4 +60,10 @@ private:
 	void Search();
 	
 	void MoveToTargetAndAttack();
+	
+	UFUNCTION()
+	void RotationAndAttack(TEnumAsByte<EPathFollowingResult::Type> Result, AAIController* AIController);
+	
+	UFUNCTION()
+	void AttackTarget();
 };

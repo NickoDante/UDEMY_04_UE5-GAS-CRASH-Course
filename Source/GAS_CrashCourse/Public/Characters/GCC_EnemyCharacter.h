@@ -22,8 +22,13 @@ public:
 	
 	virtual UAttributeSet* GetAttributeSet() const override;
 	
+	float GetAcceptanceRadius() const { return AcceptanceRadius; }
+	
 	float GetMinAttackDelay() const { return MinAttackDelay; }
 	float GetMaxAttackDelay() const { return MinAttackDelay; }
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	float BP_GetRotationTimelineLength() const;
 
 protected:
 	
