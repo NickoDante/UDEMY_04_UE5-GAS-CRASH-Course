@@ -68,4 +68,10 @@ namespace GCCTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead); // When an object is dead
 		}
 	}
+	
+	// Category for anything involves SetByCaller usage
+    namespace SetByCaller
+    {
+        UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile); // Used in projectiles for Damage value
+    }
 }

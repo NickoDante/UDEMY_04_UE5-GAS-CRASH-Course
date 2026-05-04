@@ -57,4 +57,9 @@ namespace GCCTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Dead, "GCCTags.Status.Common.Dead", "Tag given when an object is dead")
 		}
 	}
+	
+	namespace SetByCaller
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "GCCTags.SetByCaller.Projectile", "Tag used in projectiles for Damage value");
+	}
 }

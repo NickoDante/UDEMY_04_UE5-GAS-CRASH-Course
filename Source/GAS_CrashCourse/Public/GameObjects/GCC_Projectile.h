@@ -26,7 +26,7 @@ public:
 protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Crash|Damage", meta = (ExposeOnSpawn, ClampMin = "0.0"))
-	float Damage{10.f};
+	float Damage{-25.f};
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Crash|Projectile")
 	void BP_SpawnImpactEffects();
