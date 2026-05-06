@@ -47,6 +47,11 @@ namespace GCCTags
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Events.Enemy.HitReact", "Tag for the enemy when it receives something to activate HitReaction")
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "GCCTags.Events.Enemy.EndAttack", "Tag for the enemy when it ends its own attack")
+			
+			namespace Melee
+			{
+				UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "GCCTags.Events.Enemy.Melee.TraceHit", "Tag for the enemy when the enemy melee swing attack is detecting a hit")
+			}
 		}
 	}
 	

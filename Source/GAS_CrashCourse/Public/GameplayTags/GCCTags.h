@@ -56,6 +56,11 @@ namespace GCCTags
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact); // Called when the enemy has been involved when a hit occurs.
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(EndAttack); // Called when the enemy ends its attack.
+			
+			namespace Melee
+			{
+				UE_DECLARE_GAMEPLAY_TAG_EXTERN(TraceHit); // Called when the enemy melee swing attack, is detecting a hit
+			}
 		}
 	}
 	
