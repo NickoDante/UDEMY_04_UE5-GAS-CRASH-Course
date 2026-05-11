@@ -50,7 +50,7 @@ namespace GCCTags
 			
 			namespace Melee
 			{
-				UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "GCCTags.Events.Enemy.Melee.TraceHit", "Tag for the enemy when the enemy melee swing attack is detecting a hit")
+				UE_DEFINE_GAMEPLAY_TAG_COMMENT(TraceHit, "GCCTags.Events.Enemy.Melee.TraceHit", "Tag for the enemy when the enemy melee swing attack is detecting a hit")
 			}
 		}
 	}
