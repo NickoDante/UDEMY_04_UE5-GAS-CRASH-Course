@@ -68,5 +68,6 @@ namespace GCCTags
 	namespace SetByCaller
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "GCCTags.SetByCaller.Projectile", "Tag used in projectiles for Damage value");
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Melee, "GCCTags.SetByCaller.Melee", "Tag used in Melee Attacks for Damage value");
 	}
 }

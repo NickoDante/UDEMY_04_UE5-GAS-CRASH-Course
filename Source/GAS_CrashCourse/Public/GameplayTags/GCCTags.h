@@ -80,5 +80,6 @@ namespace GCCTags
     namespace SetByCaller
     {
         UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile); // Used in projectiles for Damage value
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Melee); // Used in melee attacks for Damage value
     }
 }
