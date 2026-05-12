@@ -11,6 +11,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Characters/GCC_PlayerCharacter.h"
 #include "GameplayTags/GCCTags.h"
+#include "Utils/GCC_BlueprintLibrary.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 AGCC_Projectile::AGCC_Projectile()
@@ -40,12 +41,10 @@ void AGCC_Projectile::NotifyActorBeginOverlap(AActor* OtherActor)
 	}
 	
 	// Apply the Damage effect
-	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
-	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
-	
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GCCTags::SetByCaller::Projectile, Damage);
-	
-	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	FGameplayEventData Payload;
+	Payload.Instigator = GetOwner();
+	Payload.Target = PlayerCharacter;
+	UGCC_BlueprintLibrary::SendDamageEventToPlayer(PlayerCharacter, DamageEffect, Payload, GCCTags::SetByCaller::Projectile, Damage);
 
 	BP_SpawnImpactEffects();
 

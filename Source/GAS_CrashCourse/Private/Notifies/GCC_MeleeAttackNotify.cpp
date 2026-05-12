@@ -76,8 +76,8 @@ void UGCC_MeleeAttackNotify::PerformSphereTrace(TArray<FHitResult>& OutHits, USk
 			EDrawDebugTrace::ForDuration, 
 			bHit, 
 			OutHits, 
-			FColor::Green, 
 			FColor::Red, 
+			FColor::Green, 
 			5.0f);
 	}
 }

@@ -7,7 +7,10 @@
 #include "Kismet/GameplayStatics.h"
 
 // Project includes
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Characters/GCC_BaseCharacter.h"
+#include "AbilitySystem/GCC_AttributeSet.h"
+#include "GameplayTags/GCCTags.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 EGCC_HitDirection UGCC_BlueprintLibrary::GetHitDirection(const FVector& TargetForward, const FVector& ToInstigator)
@@ -96,4 +99,46 @@ FGCC_ClosestActorWithTagResult UGCC_BlueprintLibrary::FindClosestActorWithTag(co
 	Result.Distance = ClosestDistance;
 	
 	return Result;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
+	const FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage)
+{
+	// Check if is a player and if its alive
+	AGCC_BaseCharacter* PlayerCharacter = Cast<AGCC_BaseCharacter>(Target);
+	if (!IsValid(PlayerCharacter) || !PlayerCharacter->IsAlive())
+	{
+		return;
+	}
+		
+	// Get The Attribute set to access the attributes data
+	UGCC_AttributeSet* AttributeSet = Cast<UGCC_AttributeSet>(PlayerCharacter->GetAttributeSet());
+	if (!IsValid(AttributeSet))
+	{
+		return;
+	}
+		
+	// Check if the damage would be lethal
+	const bool bIsLethal = AttributeSet->GetHealth() - Damage <= 0.0f;
+	
+	// Choose which event you want to send
+	const FGameplayTag EventTag= bIsLethal ? GCCTags::Events::Player::Death : GCCTags::Events::Player::HitReact;
+	
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerCharacter, EventTag, Payload);
+	
+	// Get the ASC to apply the damage effect
+	UAbilitySystemComponent* TargetASC = PlayerCharacter->GetAbilitySystemComponent();
+	if (!IsValid(TargetASC))
+	{
+		return;
+	}
+	
+	// Set the COntext and the Spec Handle, with the effect & the level
+	FGameplayEffectContextHandle ContextHandle = TargetASC->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
+	
+	// Assign the Magnitude with the tag & apply it
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DataTag, -Damage);
+	TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }

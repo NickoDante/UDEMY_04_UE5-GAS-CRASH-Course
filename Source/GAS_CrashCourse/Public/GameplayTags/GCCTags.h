@@ -49,6 +49,8 @@ namespace GCCTags
 		namespace Player
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary); // Called when the primary action animation is played and its in the time to make a hit
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact); // Called when the player receives a hit and it has to react
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Death); // Called when the player is dead
 		}
 		
 		// Events for the enemy
