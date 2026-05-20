@@ -84,6 +84,11 @@ void AGCC_BaseCharacter::ModifyAttributesByClass(TSubclassOf<UGameplayEffect> At
 	*	2. Make an Spec from the effect class, the level and the context handle
 	*	3. Apply the effect to Self (the ASC who is calling it)
 	*/
+	if (!IsValid(GetAbilitySystemComponent()))
+	{
+		return;
+	}
+	
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(AttributeEffect, 1.f, ContextHandle);
 	
