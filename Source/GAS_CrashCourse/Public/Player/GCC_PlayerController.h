@@ -60,4 +60,6 @@ private:
 	void TertiaryAbility();
 	
 	void ActivateAbility(const FGameplayTag& AbilityTag) const;
+	
+	bool IsAlive() const;
 };

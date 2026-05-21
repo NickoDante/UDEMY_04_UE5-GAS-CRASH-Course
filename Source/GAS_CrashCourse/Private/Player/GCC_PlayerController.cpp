@@ -11,6 +11,7 @@
 #include "AbilitySystemComponent.h"
 
 // Project Includes
+#include "Characters/GCC_PlayerCharacter.h"
 #include "GameplayTags/GCCTags.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,6 +87,11 @@ void AGCC_PlayerController::Move(const FInputActionValue& Value)
 		return;
 	}
 	
+	if (!IsAlive())
+	{
+		return;
+	}
+	
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	
 	// Find which way is forward
@@ -100,6 +106,11 @@ void AGCC_PlayerController::Move(const FInputActionValue& Value)
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::Look(const FInputActionValue& Value)
 {
+	if (!IsAlive())
+	{
+		return;
+	}
+	
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	
 	AddYawInput(LookAxisVector.X);
@@ -127,6 +138,11 @@ void AGCC_PlayerController::TertiaryAbility()
 //----------------------------------------------------------------------------------------------------------------------
 void AGCC_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
 {
+	if (!IsAlive())
+	{
+		return;
+	}
+	
 	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
 	if (!IsValid(ASC))
 	{
@@ -134,4 +150,16 @@ void AGCC_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) cons
 	}
 	
 	ASC->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+bool AGCC_PlayerController::IsAlive() const
+{
+	AGCC_PlayerCharacter* PlayerCharacter = Cast<AGCC_PlayerCharacter>(GetPawn());
+	if(!IsValid(PlayerCharacter))
+	{
+		return false;
+	}
+	
+	return PlayerCharacter->IsAlive();
 }
