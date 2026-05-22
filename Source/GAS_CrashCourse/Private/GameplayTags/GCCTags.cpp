@@ -70,4 +70,13 @@ namespace GCCTags
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "GCCTags.SetByCaller.Projectile", "Tag used in projectiles for Damage value");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Melee, "GCCTags.SetByCaller.Melee", "Tag used in Melee Attacks for Damage value");
 	}
+	
+	namespace Effects
+	{
+		// Common effects for any object in the game
+		namespace Common
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(BlockHitReact, "GCCTags.Effects.Common.BlockHitReact", "Tag for the effect to block any hit react")
+		}
+	}
 }

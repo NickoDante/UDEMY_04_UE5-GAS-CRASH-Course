@@ -82,4 +82,14 @@ namespace GCCTags
         UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile); // Used in projectiles for Damage value
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Melee); // Used in melee attacks for Damage value
     }
+	
+	// Category for any effect to consider
+	namespace Effects
+	{
+		// Common effects for any object in the game
+		namespace Common
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BlockHitReact); // Tag for the effect to block any hit react
+		}
+	}
 }
