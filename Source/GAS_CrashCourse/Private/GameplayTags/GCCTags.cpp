@@ -41,6 +41,7 @@ namespace GCCTags
 		namespace Player
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GCCTags.Events.Player.Primary", "Tag for the player to invoke the logic to make damage with Primary Attack")
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GCCTags.Events.Player.Secondary", "Tag for the player to invoke the logic to make something with Secondary Attack")
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GCCTags.Events.Player.HitReact", "Tag for the player when it receives damage and needs to react")
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Death, "GCCTags.Events.Player.Death", "Tag for the player when the damage cause Death")
 		}
