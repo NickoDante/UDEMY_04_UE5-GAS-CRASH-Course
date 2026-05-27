@@ -49,4 +49,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
 		UPARAM(ref) FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, UObject* OptionalParticleSystem = nullptr);
+		
+	UFUNCTION(BlueprintCallable)
+	static TArray<AActor*> HitBoxOverlapTest(AActor* AvatarActor, const float HitBoxRadius, 
+		const float HitBoxForwardOffset = 0.f, const float HitBoxElevationOffset = 0.f, const bool bDrawDebugs = false);
+	
+protected:
+	
+	static void DrawHitBoxOverlapDebugs(UObject* WorldContextObject, const float HitBoxRadius, const TArray<FOverlapResult>& OverlapResults, 
+		const FVector& HitBoxLocation);
 };
