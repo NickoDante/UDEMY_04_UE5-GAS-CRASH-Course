@@ -202,6 +202,103 @@ TArray<AActor*> UGCC_BlueprintLibrary::HitBoxOverlapTest(AActor* AvatarActor, co
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+TArray<AActor*> UGCC_BlueprintLibrary::ApplyKnockback(AActor* AvatarActor, const TArray<AActor*>& HitActors,
+	const float InnerRadius, const float OuterRadius, const float LaunchForceMagnitude, const float RotationAngle,
+	const bool bDrawDebugs)
+{
+	if (!IsValid(AvatarActor))
+	{
+		return TArray<AActor*>();
+	}
+	
+	for (AActor* HitActor : HitActors)
+	{
+		ACharacter* HitCharacter = Cast<ACharacter>(HitActor);
+		if (!IsValid(HitCharacter))
+		{
+			continue;
+		}
+		
+		// Get the location of the owner and the target to apply the force
+		const FVector HitCharacterLocation = HitActor->GetActorLocation();
+		const FVector AvatarLocation = AvatarActor->GetActorLocation();
+		
+		// We want a vector from the avatar to the Hit Character because I want to launch those characters away from the avatar.
+		const FVector ToHitActor = HitCharacterLocation - AvatarLocation;
+		
+		// Get the Distance of the vector to apply the falloff.
+		const float Distance = FVector::Dist(AvatarLocation, HitCharacterLocation);
+		
+		// Calculate the Force to apply following the Falloff
+		float LaunchForce = 0.f;
+		
+		// If the HitActor is far away, ignore it
+		if (Distance > OuterRadius)
+		{
+			continue;
+		}
+
+		// If the Hit Actor is close, apply the max force
+		if (Distance <= InnerRadius)
+		{
+			LaunchForce = LaunchForceMagnitude;
+		}
+		else
+		{
+			// Declare the falloff range from the Ineer Radius to the Outer Radius
+			const FVector2D FalloffRange(InnerRadius, OuterRadius); // input range
+			
+			// Declare the Launch fiorce Range from the maximum to zero.
+			const FVector2D LaunchForceRange(LaunchForceMagnitude, 0.f); // output range
+			
+			LaunchForce = FMath::GetMappedRangeValueClamped(FalloffRange, LaunchForceRange, Distance);
+		}
+		
+		// Print the Launch force calculated if you like
+		if (bDrawDebugs)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				-1, 
+				3.f, 
+				FColor::Red, 
+				FString::Printf(TEXT("LaunchForce applied to '%s' is : %f"), *HitActor->GetName(), LaunchForce));
+		}
+		
+		// Get the direction to apply the force, from the actor to the hit actor
+		FVector KnockbackForce = ToHitActor.GetSafeNormal();
+		
+		// Ignore the value in Z
+		KnockbackForce.Z = 0.0;
+		
+		// Apply the angle rotation. 
+		const FVector Right = KnockbackForce.RotateAngleAxis(90.f, FVector::UpVector);
+		KnockbackForce = KnockbackForce.RotateAngleAxis(-RotationAngle, Right);
+		
+		// We have the KnockBackForeDirection... DONT FORGET TO multiply to the Launch force !
+		KnockbackForce *= LaunchForce;
+		
+		// Draw the force with a Debug Arrow
+		if (bDrawDebugs)
+		{
+			UWorld* World = GEngine->GetWorldFromContextObject(AvatarActor, EGetWorldErrorMode());
+			DrawDebugDirectionalArrow(
+				World, 
+				HitCharacterLocation, 
+				HitCharacterLocation + KnockbackForce, 
+				100.f, 
+				FColor::Green, 
+				false, 
+				3.f);	
+		}
+		
+		// Apply the force
+		HitCharacter->LaunchCharacter(KnockbackForce, true, true );
+	}
+	
+	return HitActors;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void UGCC_BlueprintLibrary::DrawHitBoxOverlapDebugs(UObject* WorldContextObject, const float HitBoxRadius, 
 	const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation)
 {

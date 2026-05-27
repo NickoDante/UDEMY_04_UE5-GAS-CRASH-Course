@@ -54,6 +54,10 @@ public:
 	static TArray<AActor*> HitBoxOverlapTest(AActor* AvatarActor, const float HitBoxRadius, 
 		const float HitBoxForwardOffset = 0.f, const float HitBoxElevationOffset = 0.f, const bool bDrawDebugs = false);
 	
+	UFUNCTION(BlueprintCallable)
+	static TArray<AActor*> ApplyKnockback(AActor* AvatarActor, const TArray<AActor*>& HitActors, const float InnerRadius, 
+		const float OuterRadius, const float LaunchForceMagnitude, const float RotationAngle = 45.f, const bool bDrawDebugs = false);
+	
 protected:
 	
 	static void DrawHitBoxOverlapDebugs(UObject* WorldContextObject, const float HitBoxRadius, const TArray<FOverlapResult>& OverlapResults, 
