@@ -7,8 +7,11 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 
 // Project Includes
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/GCC_AbilitySystemComponent.h"
 #include "AbilitySystem/GCC_AttributeSet.h"
+#include "GameplayTags/GCCTags.h"
+#include "Net/UnrealNetwork.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 AGCC_EnemyCharacter::AGCC_EnemyCharacter()
@@ -65,6 +68,14 @@ void AGCC_EnemyCharacter::BeginPlay()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+void AGCC_EnemyCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ThisClass, bIsBeingLaunched);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 void AGCC_EnemyCharacter::HandleDeath()
 {
 	Super::HandleDeath();
@@ -77,3 +88,35 @@ void AGCC_EnemyCharacter::HandleDeath()
 	
 	AIController->StopMovement();
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_EnemyCharacter::StopMovementWhenLaunched()
+{
+	bIsBeingLaunched = true;
+	
+	AAIController* AIController = GetController<AAIController>();
+	if (!IsValid(AIController))
+	{
+		return;
+	}
+	
+	AIController->StopMovement();
+	
+	if (!LandedDelegate.IsAlreadyBound(this, &ThisClass::StartMovementAfterLanded))
+	{
+		LandedDelegate.AddUniqueDynamic(this, &ThisClass::StartMovementAfterLanded);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void AGCC_EnemyCharacter::StartMovementAfterLanded(const FHitResult& Hit)
+{
+	bIsBeingLaunched = false;
+	
+	// Send the event to search again when its in the ground. No GameplayEventData needed.
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, GCCTags::Events::Enemy::EndAttack, FGameplayEventData());
+	
+	// Clean the Delegate subscription
+	LandedDelegate.RemoveAll(this);
+}
+

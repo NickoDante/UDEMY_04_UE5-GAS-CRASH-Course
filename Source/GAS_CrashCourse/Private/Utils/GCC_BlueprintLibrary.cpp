@@ -11,6 +11,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Characters/GCC_BaseCharacter.h"
 #include "AbilitySystem/GCC_AttributeSet.h"
+#include "Characters/GCC_EnemyCharacter.h"
 #include "GameplayTags/GCCTags.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -293,6 +294,13 @@ TArray<AActor*> UGCC_BlueprintLibrary::ApplyKnockback(AActor* AvatarActor, const
 		
 		// Apply the force
 		HitCharacter->LaunchCharacter(KnockbackForce, true, true );
+		
+		// If its an enemy, call the Stop Movement
+		AGCC_EnemyCharacter* EnemyCharacter = Cast<AGCC_EnemyCharacter>(HitCharacter);
+		if (IsValid(EnemyCharacter))
+		{
+			EnemyCharacter->StopMovementWhenLaunched();
+		}
 	}
 	
 	return HitActors;

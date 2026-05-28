@@ -71,7 +71,10 @@ void UGCC_SearchForTarget::StartSearch()
 //----------------------------------------------------------------------------------------------------------------------
 void UGCC_SearchForTarget::EndAttackEventReceived(FGameplayEventData Payload)
 {
-	StartSearch();
+	if (OwningEnemyPtr.IsValid() && !OwningEnemyPtr->bIsBeingLaunched)
+	{
+		StartSearch();
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

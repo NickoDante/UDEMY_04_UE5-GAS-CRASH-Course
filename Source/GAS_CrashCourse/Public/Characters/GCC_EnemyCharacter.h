@@ -18,6 +18,9 @@ public:
 
 	AGCC_EnemyCharacter();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated, Category = "Crash|AI")
+	uint8 bIsBeingLaunched : 1 {false} ;
+	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	virtual UAttributeSet* GetAttributeSet() const override;
@@ -29,10 +32,14 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	float BP_GetRotationTimelineLength() const;
+	
+	void StopMovementWhenLaunched();
 
 protected:
 	
 	virtual void BeginPlay() override;
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Crash|AI")
 	float AcceptanceRadius {500.0f} ;
@@ -44,6 +51,9 @@ protected:
 	float MaxAttackDelay {0.5f} ;
 	
 	virtual void HandleDeath() override;
+	
+	UFUNCTION()
+	void StartMovementAfterLanded(const FHitResult& Hit);
 	
 private:
 	
