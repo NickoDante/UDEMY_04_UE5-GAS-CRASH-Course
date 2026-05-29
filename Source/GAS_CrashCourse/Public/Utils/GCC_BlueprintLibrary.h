@@ -47,8 +47,14 @@ public:
 	static FGCC_ClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag);
 	
 	UFUNCTION(BlueprintCallable)
-	static void SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
-		UPARAM(ref) FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, UObject* OptionalParticleSystem = nullptr);
+	static void SendDamageEventToCharacters(TArray<AActor*> Targets, const TSubclassOf<UGameplayEffect>& DamageEffect,
+		UPARAM(ref) FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, const FGameplayTag& EventTagOverride, 
+		UObject* OptionalParticleSystem = nullptr);
+	
+	UFUNCTION(BlueprintCallable)
+	static void SendDamageEventToCharacter(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
+		UPARAM(ref) FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, const FGameplayTag& EventTagOverride, 
+		UObject* OptionalParticleSystem = nullptr);
 		
 	UFUNCTION(BlueprintCallable)
 	static TArray<AActor*> HitBoxOverlapTest(AActor* AvatarActor, const float HitBoxRadius, 

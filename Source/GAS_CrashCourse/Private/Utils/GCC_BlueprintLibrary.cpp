@@ -104,8 +104,20 @@ FGCC_ClosestActorWithTagResult UGCC_BlueprintLibrary::FindClosestActorWithTag(co
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void UGCC_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
-	FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, UObject* OptionalParticleSystem)
+void UGCC_BlueprintLibrary::SendDamageEventToCharacters(TArray<AActor*> Targets,
+	const TSubclassOf<UGameplayEffect>& DamageEffect, FGameplayEventData& Payload, const FGameplayTag& DataTag,
+	float Damage, const FGameplayTag& EventTagOverride, UObject* OptionalParticleSystem)
+{
+	for (AActor* Target : Targets)
+	{
+		SendDamageEventToCharacter(Target, DamageEffect, Payload, DataTag, Damage, EventTagOverride, OptionalParticleSystem);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void UGCC_BlueprintLibrary::SendDamageEventToCharacter(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
+	FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage, const FGameplayTag& EventTagOverride, 
+	UObject* OptionalParticleSystem)
 {
 	// Check if is a player and if its alive
 	AGCC_BaseCharacter* PlayerCharacter = Cast<AGCC_BaseCharacter>(Target);
@@ -113,19 +125,30 @@ void UGCC_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubcl
 	{
 		return;
 	}
-		
-	// Get The Attribute set to access the attributes data
-	UGCC_AttributeSet* AttributeSet = Cast<UGCC_AttributeSet>(PlayerCharacter->GetAttributeSet());
-	if (!IsValid(AttributeSet))
-	{
-		return;
-	}
-		
-	// Check if the damage would be lethal
-	const bool bIsLethal = AttributeSet->GetHealth() - Damage <= 0.0f;
 	
-	// Choose which event you want to send
-	const FGameplayTag EventTag= bIsLethal ? GCCTags::Events::Player::Death : GCCTags::Events::Player::HitReact;
+	// Set the Event Tag. 
+	//	- If there's override set it directly.
+	//	- If not, Get the attribute set and set it if its a Hit React or a Death tag
+	FGameplayTag EventTag;
+	if (!EventTagOverride.MatchesTagExact(GCCTags::None))
+	{
+		EventTag = EventTagOverride;
+	}
+	else
+	{
+		// Get The Attribute set to access the attributes data
+		UGCC_AttributeSet* AttributeSet = Cast<UGCC_AttributeSet>(PlayerCharacter->GetAttributeSet());
+		if (!IsValid(AttributeSet))
+		{
+			return;
+		}
+		
+		// Check if the damage would be lethal
+		const bool bIsLethal = AttributeSet->GetHealth() - Damage <= 0.0f;
+	
+		// Choose which event you want to send
+		EventTag= bIsLethal ? GCCTags::Events::Player::Death : GCCTags::Events::Player::HitReact;
+	}
 	
 	Payload.OptionalObject = OptionalParticleSystem;
 	

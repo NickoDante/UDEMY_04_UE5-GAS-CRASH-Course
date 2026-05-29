@@ -2,6 +2,8 @@
 
 namespace GCCTags
 {	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(None, "GCCTags.None", "Tag for empty behaviors. None.")
+	
 	namespace Abilities
 	{
 		namespace Common
@@ -70,6 +72,8 @@ namespace GCCTags
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "GCCTags.SetByCaller.Projectile", "Tag used in projectiles for Damage value");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Melee, "GCCTags.SetByCaller.Melee", "Tag used in Melee Attacks for Damage value");
+		
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GCCTags.SetByCaller.Secondary", "Tag used in Player Secondary Ability for Damage value");
 	}
 	
 	namespace Effects

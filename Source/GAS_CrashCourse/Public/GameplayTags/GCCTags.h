@@ -5,6 +5,8 @@
 
 namespace GCCTags
 {
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(None);
+	
 	// Category for anything involves Abilities
 	namespace Abilities
 	{
@@ -82,6 +84,8 @@ namespace GCCTags
     {
         UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile); // Used in projectiles for Damage value
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Melee); // Used in melee attacks for Damage value
+		
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary); // Used in Player's secondary Ability for Damage Value
     }
 	
 	// Category for any effect to consider
