@@ -97,4 +97,12 @@ namespace GCCTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BlockHitReact); // Tag for the effect to block any hit react
 		}
 	}
+	
+	namespace Cooldowns
+	{
+		namespace Player
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary); // Tag for the cooldown to the Secondary Ability of the Player
+		}
+	}
 }

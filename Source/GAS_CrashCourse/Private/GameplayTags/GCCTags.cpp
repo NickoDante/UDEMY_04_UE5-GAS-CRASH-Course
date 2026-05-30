@@ -84,4 +84,12 @@ namespace GCCTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(BlockHitReact, "GCCTags.Effects.Common.BlockHitReact", "Tag for the effect to block any hit react")
 		}
 	}
+	
+	namespace Cooldowns
+	{
+		namespace Player
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GCCTags.Cooldowns.Player.Secondary", "Tag for the cooldown to the Secondary Ability of the Player")
+		}
+	}
 }
