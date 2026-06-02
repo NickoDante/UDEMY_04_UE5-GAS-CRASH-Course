@@ -25,13 +25,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Crash|Attributes")
 	FGameplayAttribute MaxAttribute;
 	
+	UPROPERTY(BlueprintReadOnly, Category="Crash|Attributes")
+	TWeakObjectPtr<AActor> AvatarActor;
 	
-	void OnAttributeChange(const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair, UGCC_AttributeSet* AttributeSet); 
+	void OnAttributeChange(const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair, UGCC_AttributeSet* AttributeSet, const float OldValue); 
 			// We need the AttributeSet in order to access the numerical value of any gameplay attribute
 			// FGameplatyAttribute is just an identifier, that tells us which attribute we're dealing with
 	
 	bool MatchesAttributes(const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const;
 	
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "On Attribute Change"))
-	void BP_OnAttributeChange(const float NewValue, const float NewMaxValue);
+	void BP_OnAttributeChange(const float NewValue, const float NewMaxValue, const float OldValue);
 };

@@ -5,13 +5,13 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 void UGCC_AttributeWidget::OnAttributeChange(const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair,
-	UGCC_AttributeSet* AttributeSet)
+	UGCC_AttributeSet* AttributeSet, const float OldValue)
 {
 	// This returns the numeric value of the attributes
 	const float AttributeValue = Pair.Key.GetNumericValue(AttributeSet);
 	const float MaxAttributeValue = Pair.Value.GetNumericValue(AttributeSet);
 	
-	BP_OnAttributeChange(AttributeValue, MaxAttributeValue);
+	BP_OnAttributeChange(AttributeValue, MaxAttributeValue, OldValue);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -97,16 +97,18 @@ void UGCC_WidgetComponent::BindWidgetToAttributeChanges(UWidget* WidgetObject, c
 	{
 		return;
 	}
+	
+	AttributeWidget->AvatarActor = CrashCharacter;
 		
 	if (!AttributeWidget->MatchesAttributes(Pair)) // Only subscribe for matching Attributes
 	{
 		return;
 	}
 	
-	AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get()); // For initial Values
+	AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get(), 0.f); // For initial Values
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Key).AddLambda([this, AttributeWidget, &Pair](const FOnAttributeChangeData& AttributeChangeData)
 	{
-		AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get()); // For changes during the game
+		AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get(), AttributeChangeData.OldValue); // For changes during the game
 	});
 }
