@@ -53,7 +53,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_RotateToTarget(AActor* RotateTarget);
 	
+	float GetSearchRange() const { return SearchRange; }
+	
 protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Crash|AI")
+	float SearchRange {1000.f} ;
 	
 	void GiveStartupAbilities();
 	

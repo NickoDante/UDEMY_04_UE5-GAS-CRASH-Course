@@ -61,7 +61,7 @@ FName UGCC_BlueprintLibrary::GetHitDirectionName(const EGCC_HitDirection& HitDir
 
 //----------------------------------------------------------------------------------------------------------------------
 FGCC_ClosestActorWithTagResult UGCC_BlueprintLibrary::FindClosestActorWithTag(const UObject* WorldContextObject,
-	const FVector& Origin, const FName& Tag)
+	const FVector& Origin, const FName& Tag, const float SearchRange)
 {
 	TArray<AActor*> ActorsWithTag;
 	UGameplayStatics::GetAllActorsWithTag(WorldContextObject, Tag, ActorsWithTag);
@@ -89,6 +89,13 @@ FGCC_ClosestActorWithTagResult UGCC_BlueprintLibrary::FindClosestActorWithTag(co
 		
 		// Calculate the distance and check if its the closest one
 		const float Distance = FVector::Dist(Origin, Actor->GetActorLocation());
+		
+		// If the Distance is greater than the search range, ignore this actor.
+		if (Distance > SearchRange)
+		{
+			continue;
+		}
+		
 		if (Distance < ClosestDistance)
 		{
 			ClosestDistance = Distance;

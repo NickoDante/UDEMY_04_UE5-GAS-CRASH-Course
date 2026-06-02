@@ -44,7 +44,7 @@ public:
 	static FName GetHitDirectionName(const EGCC_HitDirection& HitDirection);
 	
 	UFUNCTION(BlueprintCallable)
-	static FGCC_ClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag);
+	static FGCC_ClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag, const float SearchRange);
 	
 	UFUNCTION(BlueprintCallable)
 	static void SendDamageEventToCharacters(TArray<AActor*> Targets, const TSubclassOf<UGameplayEffect>& DamageEffect,

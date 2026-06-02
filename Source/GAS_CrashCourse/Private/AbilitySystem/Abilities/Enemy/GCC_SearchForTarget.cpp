@@ -81,7 +81,16 @@ void UGCC_SearchForTarget::EndAttackEventReceived(FGameplayEventData Payload)
 void UGCC_SearchForTarget::Search()
 {
 	const FVector SearchOrigin = GetAvatarActorFromActorInfo()->GetActorLocation();
-	FGCC_ClosestActorWithTagResult ClosestActorResult =  UGCC_BlueprintLibrary::FindClosestActorWithTag(this, SearchOrigin, CrashTags::Player);
+	if (!OwningEnemyPtr.IsValid())
+	{
+		return;
+	}
+	
+	FGCC_ClosestActorWithTagResult ClosestActorResult =  UGCC_BlueprintLibrary::FindClosestActorWithTag(
+		this, 
+		SearchOrigin, 
+		CrashTags::Player, 
+		OwningEnemyPtr.Get()->GetSearchRange());
 	
 	TargetBaseCharacterPtr = Cast<AGCC_BaseCharacter>(ClosestActorResult.Actor);
 	
