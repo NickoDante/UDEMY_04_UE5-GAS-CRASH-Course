@@ -32,14 +32,30 @@ void UGCC_AttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 {
 	Super::PostGameplayEffectExecute(Data);
 	
-	if (Data.EvaluatedData.Attribute == GetHealthAttribute() && GetHealth() <= 0.0f)
+	// Health Attribute
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		AActor* CauserActor = Data.EffectSpec.GetEffectContext().GetInstigator();
+		// Clamp Health
+		const float ClampedHealth = FMath::Clamp(GetHealth(), 0.f, GetMaxHealth());
+		SetHealth(ClampedHealth);
 		
-		FGameplayEventData Payload;
-		Payload.Instigator = Data.Target.GetAvatarActor();
+		if (GetHealth() <= 0.0f)
+		{
+			AActor* CauserActor = Data.EffectSpec.GetEffectContext().GetInstigator();
 		
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(CauserActor, GCCTags::Events::Common::KillScored, Payload);
+			FGameplayEventData Payload;
+			Payload.Instigator = Data.Target.GetAvatarActor();
+		
+			UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(CauserActor, GCCTags::Events::Common::KillScored, Payload);
+		}
+	}
+	
+	// Mana Attribute
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		// Clamp Mana
+		const float ClampedMana = FMath::Clamp(GetMana(), 0.f, GetMaxMana());
+		SetMana(ClampedMana);
 	}
 	
 	if (!bAttributesInitialized)
