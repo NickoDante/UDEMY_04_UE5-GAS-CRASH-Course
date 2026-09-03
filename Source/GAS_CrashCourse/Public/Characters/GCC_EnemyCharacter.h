@@ -28,7 +28,7 @@ public:
 	float GetAcceptanceRadius() const { return AcceptanceRadius; }
 	
 	float GetMinAttackDelay() const { return MinAttackDelay; }
-	float GetMaxAttackDelay() const { return MinAttackDelay; }
+	float GetMaxAttackDelay() const { return MaxAttackDelay; }
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	float BP_GetRotationTimelineLength() const;
